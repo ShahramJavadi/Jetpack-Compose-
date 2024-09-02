@@ -17,9 +17,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material3.Button
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -35,6 +40,8 @@ import androidx.compose.ui.unit.sp
 import com.example.jetpackcompose.ui.theme.JetPackComposeTheme
 
 class MainActivity : ComponentActivity() {
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
@@ -59,6 +66,7 @@ fun InitUi() {
             CreateText()
             Spacer(modifier = Modifier.height(10.dp))
             CreateSpannableText()
+            CreateCounterButton()
         }
 
     }
@@ -87,6 +95,29 @@ fun CreateColumn(name: String, modifier: Modifier = Modifier) {
 
 }
 
+var counterState = mutableStateOf(0)
+@Composable
+fun CreateCounterButton(){
+
+    var counter  by  remember {
+        counterState
+    }
+    Column {
+        Button(onClick = { counter++ }) {
+
+          Text(text = "Increase")
+
+        }
+
+        Text(text = counter.toString())
+
+
+    }
+
+
+
+
+}
 @Composable
 fun CreateText() {
 
@@ -99,7 +130,7 @@ fun CreateText() {
             .clickable {
                 Log.d("Jetpack Compose", "CreateText: ")
             },
-        color = Color.Cyan,
+         color = Color.Cyan,
         fontSize = 36.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
