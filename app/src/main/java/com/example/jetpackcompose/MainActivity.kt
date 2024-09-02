@@ -1,10 +1,13 @@
 package com.example.jetpackcompose
 
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -90,8 +93,12 @@ fun CreateText() {
 
     Text(
         modifier = Modifier
-            .fillMaxWidth()
-            .background(Color.Blue),
+            .background(Color.Blue)
+            .border(3.dp, Color.Black)
+            .padding(16.dp)
+            .clickable {
+                Log.d("Jetpack Compose", "CreateText: ")
+            },
         color = Color.Cyan,
         fontSize = 36.sp,
         fontWeight = FontWeight.Bold,
