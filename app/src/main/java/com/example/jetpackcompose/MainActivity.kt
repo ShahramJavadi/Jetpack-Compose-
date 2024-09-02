@@ -5,10 +5,12 @@ import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -17,8 +19,14 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -27,7 +35,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
@@ -56,20 +68,129 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun InitUi() {
 
-    Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-        Column {
-            CreateColumn(
-                name = "Android",
-                modifier = Modifier.padding(innerPadding)
+    Surface(modifier = Modifier.fillMaxSize()) { ->
+        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+
+            CreateListItem(
+                painter = painterResource(id = R.drawable.nature),
+                title = "Nature",
+                description = "This is the nature product",
+                price = "35.3$",
+                discountedPrice = "20.0$"
             )
-            CreateRow()
-            CreateText()
-            Spacer(modifier = Modifier.height(10.dp))
-            CreateSpannableText()
-            CreateCounterButton()
+            CreateListItem(
+                painter = painterResource(id = R.drawable.nature),
+                title = "Nature",
+                description = "This is the nature product",
+                price = "35.3$",
+                discountedPrice = "20.0$"
+            )
+            CreateListItem(
+                painter = painterResource(id = R.drawable.nature),
+                title = "Nature",
+                description = "This is the nature product",
+                price = "35.3$",
+                discountedPrice = "20.0$"
+            )
+            CreateListItem(
+                painter = painterResource(id = R.drawable.nature),
+                title = "Nature",
+                description = "This is the nature product",
+                price = "35.3$",
+                discountedPrice = "20.0$"
+            )
+            CreateListItem(
+                painter = painterResource(id = R.drawable.nature),
+                title = "Nature",
+                description = "This is the nature product",
+                price = "35.3$",
+                discountedPrice = "20.0$"
+            )
+            CreateListItem(
+                painter = painterResource(id = R.drawable.nature),
+                title = "Nature",
+                description = "This is the nature product",
+                price = "35.3$",
+                discountedPrice = "20.0$"
+            )
+            CreateListItem(
+                painter = painterResource(id = R.drawable.nature),
+                title = "Nature",
+                description = "This is the nature product",
+                price = "35.3$",
+                discountedPrice = "20.0$"
+            )
+//            CreateColumn(
+//                name = "Android",
+//                modifier = Modifier.padding(innerPadding)
+//            )
+//            CreateRow()
+//            CreateText()
+//            Spacer(modifier = Modifier.height(10.dp))
+//            CreateSpannableText()
+//            CreateCounterButton()
         }
 
     }
+
+}
+
+@Composable
+fun CreateListItem(
+    painter: Painter,
+    title: String,
+    description: String,
+    price: String,
+    discountedPrice: String
+) {
+
+
+    Card(
+        modifier = Modifier
+            .fillMaxWidth()
+            .height(200.dp)
+            .padding(10.dp),
+        shape = RoundedCornerShape(12.dp),
+    ) {
+        Box {
+            Image(
+                painter = painter,
+                contentDescription = null,
+                contentScale = ContentScale.FillBounds
+            )
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .background(
+
+                        Brush.verticalGradient(colors = listOf(Color.Transparent, Color.Black))
+
+                    ),
+            ) {}
+
+            Box(modifier = Modifier.fillMaxSize().padding(8.dp), contentAlignment = Alignment.BottomCenter){
+                Column {
+                    Row(modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween) {
+
+                        Text(text = title, color = Color.White)
+                        Text(text = discountedPrice, color = Color.White)
+
+                    }
+
+                    Row(modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween) {
+                        Text(text = description, color = Color.White)
+                        Text(text = price , color = Color.White, textDecoration = TextDecoration.LineThrough)
+                    }
+                }
+            }
+
+        }
+
+
+    }
+
 
 }
 
@@ -96,16 +217,17 @@ fun CreateColumn(name: String, modifier: Modifier = Modifier) {
 }
 
 var counterState = mutableStateOf(0)
-@Composable
-fun CreateCounterButton(){
 
-    var counter  by  remember {
+@Composable
+fun CreateCounterButton() {
+
+    var counter by remember {
         counterState
     }
     Column {
         Button(onClick = { counter++ }) {
 
-          Text(text = "Increase")
+            Text(text = "Increase")
 
         }
 
@@ -115,9 +237,8 @@ fun CreateCounterButton(){
     }
 
 
-
-
 }
+
 @Composable
 fun CreateText() {
 
@@ -130,7 +251,7 @@ fun CreateText() {
             .clickable {
                 Log.d("Jetpack Compose", "CreateText: ")
             },
-         color = Color.Cyan,
+        color = Color.Cyan,
         fontSize = 36.sp,
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
@@ -153,23 +274,27 @@ fun CreateSpannableText() {
         fontWeight = FontWeight.Bold,
         fontStyle = FontStyle.Italic,
         text = buildAnnotatedString {
-            withStyle(style = SpanStyle(
-                color = Color.Yellow,
-                fontSize = 36.sp,
-                fontWeight = FontWeight.Bold
-            )){
+            withStyle(
+                style = SpanStyle(
+                    color = Color.Yellow,
+                    fontSize = 36.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
                 append("T")
             }
-            withStyle(style = SpanStyle(
-                color = Color.Red,
-                fontSize = 24.sp,
-                fontWeight = FontWeight.Bold
-            )){
+            withStyle(
+                style = SpanStyle(
+                    color = Color.Red,
+                    fontSize = 24.sp,
+                    fontWeight = FontWeight.Bold
+                )
+            ) {
                 append("est")
             }
         },
 
-    )
+        )
 }
 
 @Composable
