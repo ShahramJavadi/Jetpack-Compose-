@@ -19,7 +19,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
@@ -28,6 +33,7 @@ import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -35,8 +41,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
@@ -44,9 +52,11 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcompose.ui.theme.JetPackComposeTheme
@@ -69,57 +79,34 @@ class MainActivity : ComponentActivity() {
 fun InitUi() {
 
     Surface(modifier = Modifier.fillMaxSize()) { ->
-        Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(rememberScrollState())
+                .fillMaxWidth()
+                .wrapContentWidth(Alignment.CenterHorizontally),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
 
-            CreateListItem(
+
+            Spacer(modifier = Modifier.height(16.dp))
+            GenerateShape(shape = CircleShape, size = 90.dp, color = Color.Red)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            GenerateShape(shape = RoundedCornerShape(16.dp, 16.dp), size = 90.dp, color = Color.Red)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            GenerateShape(shape = CutCornerShape(16.dp, 16.dp), size = 90.dp, color = Color.Red)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CreateCircleImage(
                 painter = painterResource(id = R.drawable.nature),
-                title = "Nature",
-                description = "This is the nature product",
-                price = "35.3$",
-                discountedPrice = "20.0$"
+                size = 110.dp,
+                borderWidth = 2.dp,
+                borderColor = Color.Black
             )
-            CreateListItem(
-                painter = painterResource(id = R.drawable.nature),
-                title = "Nature",
-                description = "This is the nature product",
-                price = "35.3$",
-                discountedPrice = "20.0$"
-            )
-            CreateListItem(
-                painter = painterResource(id = R.drawable.nature),
-                title = "Nature",
-                description = "This is the nature product",
-                price = "35.3$",
-                discountedPrice = "20.0$"
-            )
-            CreateListItem(
-                painter = painterResource(id = R.drawable.nature),
-                title = "Nature",
-                description = "This is the nature product",
-                price = "35.3$",
-                discountedPrice = "20.0$"
-            )
-            CreateListItem(
-                painter = painterResource(id = R.drawable.nature),
-                title = "Nature",
-                description = "This is the nature product",
-                price = "35.3$",
-                discountedPrice = "20.0$"
-            )
-            CreateListItem(
-                painter = painterResource(id = R.drawable.nature),
-                title = "Nature",
-                description = "This is the nature product",
-                price = "35.3$",
-                discountedPrice = "20.0$"
-            )
-            CreateListItem(
-                painter = painterResource(id = R.drawable.nature),
-                title = "Nature",
-                description = "This is the nature product",
-                price = "35.3$",
-                discountedPrice = "20.0$"
-            )
+            Spacer(modifier = Modifier.height(16.dp))
+
+            CreateTextField()
 //            CreateColumn(
 //                name = "Android",
 //                modifier = Modifier.padding(innerPadding)
@@ -168,20 +155,32 @@ fun CreateListItem(
                     ),
             ) {}
 
-            Box(modifier = Modifier.fillMaxSize().padding(8.dp), contentAlignment = Alignment.BottomCenter){
+            Box(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(8.dp), contentAlignment = Alignment.BottomCenter
+            ) {
                 Column {
-                    Row(modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
 
                         Text(text = title, color = Color.White)
                         Text(text = discountedPrice, color = Color.White)
 
                     }
 
-                    Row(modifier = Modifier.fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
                         Text(text = description, color = Color.White)
-                        Text(text = price , color = Color.White, textDecoration = TextDecoration.LineThrough)
+                        Text(
+                            text = price,
+                            color = Color.White,
+                            textDecoration = TextDecoration.LineThrough
+                        )
                     }
                 }
             }
@@ -192,6 +191,46 @@ fun CreateListItem(
     }
 
 
+}
+
+
+@Composable
+fun CreateTextField() {
+
+    var textState by remember {
+
+        mutableStateOf(TextFieldValue("Jetpack Compose"))
+    }
+
+    TextField(value = textState, onValueChange = { textState = it })
+
+}
+
+@Composable
+fun CreateCircleImage(painter: Painter, size: Dp, borderWidth: Dp, borderColor: Color) {
+
+
+    Image(
+        painter = painter, contentDescription = null, modifier = Modifier
+            .clip(CircleShape)
+            .size(size)
+            .border(borderWidth, borderColor, CircleShape),
+        contentScale = ContentScale.FillBounds
+    )
+
+
+}
+
+
+@Composable
+fun GenerateShape(shape: Shape, size: Dp, color: Color) {
+
+    Box(
+        modifier = Modifier
+            .clip(shape)
+            .size(size)
+            .background(color)
+    )
 }
 
 @Composable
