@@ -31,6 +31,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
@@ -69,6 +70,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcompose.ui.theme.JetPackComposeTheme
+import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
 
@@ -117,6 +119,8 @@ fun InitUi() {
             Spacer(modifier = Modifier.height(16.dp))
 
             CreateTextField()
+
+            CreateExitDialog()
 //            CreateColumn(
 //                name = "Android",
 //                modifier = Modifier.padding(innerPadding)
@@ -203,6 +207,45 @@ fun CreateListItem(
 
 }
 
+val dialogState = mutableStateOf(false)
+
+@Composable
+fun CreateExitDialog() {
+
+    val openDialog = remember {
+
+        dialogState
+    }
+
+    if (openDialog.value) {
+        AlertDialog(title = {
+
+            Text(text = "Exit")
+        },
+            text = {
+                Text(text = "Are you sure to exit?")
+            }, onDismissRequest = { openDialog.value = false }, confirmButton = {
+
+            Button(onClick = {
+                openDialog.value = false
+                exitProcess(0)
+            }) {
+
+                Text(text = "Exit")
+            }
+
+        }, dismissButton = {
+            Button(onClick = {
+                openDialog.value = false
+            }) {
+
+                Text(text = "Cancel")
+            }
+        })
+    }
+
+
+}
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -212,9 +255,10 @@ fun CreateTopAppBarView() {
     TopAppBar(colors = TopAppBarColors(
         containerColor = Color.Red,
         scrolledContainerColor = Color.Red,
-        navigationIconContentColor = Color.Red,
-        actionIconContentColor = Color.Red,
-        titleContentColor = Color.Black), title = {
+        navigationIconContentColor = Color.Black,
+        actionIconContentColor = Color.Black,
+        titleContentColor = Color.Black
+    ), title = {
 
         Text(text = "AppBar")
     },
@@ -236,7 +280,9 @@ fun CreateTopAppBarView() {
 
         },
         navigationIcon = {
-            IconButton(onClick = { /*TODO*/ }) {
+            IconButton(onClick = {
+                dialogState.value = true
+            }) {
                 Icon(imageVector = Icons.Filled.ArrowBack, contentDescription = null)
             }
         })
