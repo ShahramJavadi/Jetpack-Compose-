@@ -2,6 +2,7 @@ package com.example.jetpackcompose
 
 import android.os.Bundle
 import android.util.Log
+import android.widget.CheckBox
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
@@ -23,6 +24,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.selection.selectable
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CutCornerShape
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -35,9 +37,11 @@ import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
+import androidx.compose.material3.Checkbox
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
@@ -121,6 +125,9 @@ fun InitUi() {
             CreateTextField()
 
             CreateExitDialog()
+            CreateCheckBox()
+            Spacer(modifier = Modifier.height(16.dp))
+            CreateRadioButtons()
 //            CreateColumn(
 //                name = "Android",
 //                modifier = Modifier.padding(innerPadding)
@@ -135,6 +142,57 @@ fun InitUi() {
     }
 
 }
+
+
+@Composable
+fun CreateCheckBox() {
+
+    val checkState = remember {
+        mutableStateOf(true)
+    }
+
+
+    Checkbox(checked = checkState.value, onCheckedChange = {
+        checkState.value = it
+    })
+
+}
+
+
+@Composable
+fun CreateRadioButtons() {
+
+    val radioList = listOf("Opt 1", "Opt 2", "Opt 3")
+    val (selectedOption, onOptionSelected) = remember {
+        mutableStateOf(radioList[0])
+    }
+
+    Row {
+
+        radioList.forEach { text ->
+
+
+            Row(
+                verticalAlignment = Alignment.CenterVertically, modifier = Modifier
+                    .padding(16.dp)
+                    .selectable(
+                        selected = (text == selectedOption),
+                        onClick = { onOptionSelected(text) })
+            ) {
+
+                RadioButton(
+                    selected = (text == selectedOption),
+                    onClick = { onOptionSelected(text) })
+                Text(text = text)
+
+            }
+        }
+
+    }
+
+
+}
+
 
 @Composable
 fun CreateListItem(
@@ -226,22 +284,22 @@ fun CreateExitDialog() {
                 Text(text = "Are you sure to exit?")
             }, onDismissRequest = { openDialog.value = false }, confirmButton = {
 
-            Button(onClick = {
-                openDialog.value = false
-                exitProcess(0)
-            }) {
+                Button(onClick = {
+                    openDialog.value = false
+                    exitProcess(0)
+                }) {
 
-                Text(text = "Exit")
-            }
+                    Text(text = "Exit")
+                }
 
-        }, dismissButton = {
-            Button(onClick = {
-                openDialog.value = false
-            }) {
+            }, dismissButton = {
+                Button(onClick = {
+                    openDialog.value = false
+                }) {
 
-                Text(text = "Cancel")
-            }
-        })
+                    Text(text = "Cancel")
+                }
+            })
     }
 
 
