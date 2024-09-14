@@ -38,12 +38,16 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardElevation
 import androidx.compose.material3.Checkbox
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
+import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.RadioButton
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Slider
 import androidx.compose.material3.Surface
+import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
@@ -74,6 +78,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.jetpackcompose.ui.theme.JetPackComposeTheme
+import kotlin.math.roundToInt
 import kotlin.system.exitProcess
 
 class MainActivity : ComponentActivity() {
@@ -128,7 +133,23 @@ fun InitUi() {
             CreateCheckBox()
             Spacer(modifier = Modifier.height(16.dp))
             CreateRadioButtons()
-//            CreateColumn(
+            CreateSwitch()
+            
+            // progress bar
+            CircularProgressIndicator()
+            Spacer(modifier = Modifier.height(16.dp))
+            CircularProgressIndicator(progress = { 0.6f}, strokeWidth = 4.dp, color = Color.Yellow)
+            Spacer(modifier = Modifier.height(16.dp))
+
+            LinearProgressIndicator()
+            Spacer(modifier = Modifier.height(16.dp))
+            LinearProgressIndicator(progress = { 0.7f })
+            Spacer(modifier = Modifier.height(32.dp))
+            CreateSlider()
+            Spacer(modifier = Modifier.height(60.dp))
+
+
+            //            CreateColumn(
 //                name = "Android",
 //                modifier = Modifier.padding(innerPadding)
 //            )
@@ -145,6 +166,23 @@ fun InitUi() {
 
 
 @Composable
+fun CreateSlider(){
+
+    var sliderState by remember {
+        mutableStateOf(0f)
+    }
+    
+    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+        Slider(value = sliderState, onValueChange = {sliderState = it})
+
+        Text(text = (sliderState * 100).roundToInt().toString())
+
+    }
+    
+    
+}
+
+@Composable
 fun CreateCheckBox() {
 
     val checkState = remember {
@@ -158,6 +196,18 @@ fun CreateCheckBox() {
 
 }
 
+
+@Composable
+fun CreateSwitch() {
+
+    var switchState by remember {
+
+        mutableStateOf(true)
+    }
+
+    Switch(checked = switchState, onCheckedChange = { switchState = it })
+
+}
 
 @Composable
 fun CreateRadioButtons() {
